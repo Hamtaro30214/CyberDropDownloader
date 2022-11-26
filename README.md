@@ -21,7 +21,7 @@ Home page contains two buttons. The first button allows you to type a cyberdrop 
 **TASK LIST:**
 - [X] Image Scraping with Python
 - [X] Images in low and high quality
-- [ ] GUI(PyQt)
+- [X] GUI(PyQt)
 - [ ] RegEx to validate URL
 - [ ] Downloading images selected by user
 - [ ] Pausing download
