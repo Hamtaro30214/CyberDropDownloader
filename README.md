@@ -15,10 +15,12 @@ Home page contains two buttons. The first button allows you to type a cyberdrop 
 **EXTERNAL MODULES:**
 * bs4
 * requests
+* urllib
+* PIL
 
 **TASK LIST:**
 - [X] Image Scraping with Python
-- [ ] Images in low and hight quality
+- [X] Images in low and high quality
 - [ ] GUI(PyQt)
 - [ ] RegEx to validate URL
 - [ ] Downloading images selected by user
