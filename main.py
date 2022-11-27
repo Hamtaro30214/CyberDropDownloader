@@ -1,17 +1,14 @@
 import sys
 from urllib import request as url_req
 from PIL import ImageFile
-from PyQt5.QtWidgets import QApplication
-from HomeWindow import HomeWindow
 from PyQt5 import QtWidgets
+from Controller import Controller
 
-app = QApplication(sys.argv)
-main_window = HomeWindow()
-widget = QtWidgets.QStackedWidget()
-widget.addWidget(main_window)
-widget.resize(1280, 720)
-widget.show()
-app.exec_()
+
+app = QtWidgets.QApplication(sys.argv)
+controller = Controller()
+controller.show_home_window()
+sys.exit(app.exec_())
 
 
 def get_sizes(url: str):
