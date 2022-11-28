@@ -2,11 +2,13 @@ import urllib
 import bs4
 import urllib.request
 import requests
+from urllib import request as url_req
+from PIL import ImageFile
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
 from PyQt5.uic import loadUi
-from DownloadFolder import DownloadFolder
+from DownloadDialog import DownloadDialog
 
 
 class DownloadWindow(QWidget):
@@ -58,24 +60,33 @@ class DownloadWindow(QWidget):
         return img
 
     @staticmethod
-    def save_image(image_link: str):
-        """
-        Creates the full path with the filename and saves each image to download_folder.
-        """
-        full_path = f'{DownloadFolder()}/{image_link.split("/")[-1]}'
-        image = requests.get(image_link).content
-        with open(full_path, 'wb') as final_image:
-            final_image.write(image)
-        return f"Saved to: {full_path}"
-
-    def download_images(self):
-        for img in self.get_links_to_images(self.link):
-            print(self.save_image(img))
-
-    @staticmethod
     def get_links_to_images(link):
         # get list of urls to images
         htmldata = requests.get(link)
         soup = bs4.BeautifulSoup(htmldata.text, 'html.parser')
         # hq_images = [i['data-src'] for i in soup.find_all("a", {"class": "image"})]
         return [item['src'] for item in soup.find_all('img')][1:-1]
+
+    def download_images(self):
+        asa = DownloadDialog(self.get_links_to_images(self.link))
+        asa.exec()
+
+    def get_sizes(self, url: str):
+        # UNUSED!!!
+        """
+        Gets image size and file size in bytes without downloading the image.
+        """
+        file = url_req.urlopen(url)
+        size = file.headers.get("content-length")
+        if size:
+            size = int(size)
+        p = ImageFile.Parser()
+        while True:
+            data = file.read(1024)
+            if not data:
+                break
+            p.feed(data)
+            if p.image:
+                return size, p.image.size
+        file.close()
+        return size
