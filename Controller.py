@@ -1,5 +1,5 @@
-from HomeWindow import HomeWindow
-from DownloadWindow import DownloadWindow
+from GUI.HomeWindow import HomeWindow
+from GUI.DownloadWindow import DownloadWindow
 
 
 class Controller:
@@ -21,5 +21,3 @@ class Controller:
         self.download.resize(1280, 720)
         self.home.close()
         self.download.show()
-
-
