@@ -1,3 +1,4 @@
+import math
 import urllib
 import bs4
 import urllib.request
@@ -5,8 +6,8 @@ import requests
 from urllib import request as url_req
 from PIL import ImageFile
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
 from PyQt5.uic import loadUi
 from CustomQFrame import CustomQFrame
 from GUI.DownloadDialog import DownloadDialog
@@ -23,8 +24,12 @@ class DownloadWindow(QWidget):
         self.image_list = []
         # GUI
         loadUi("download_blueprint.ui", self)
+        self.back_button.setIcon(QIcon('svg/home.svg'))
         self.back_button.clicked.connect(self.go_home_window)
+        self.label_img.setStyleSheet('color: #8be9fd;')
         self.label_img.setText(f'{self.images_len} images')
+        self.label_img.setAlignment(QtCore.Qt.AlignRight)
+        self.downlaod_button.setIcon(QIcon('svg/download.svg'))
         self.downlaod_button.clicked.connect(self.download_images)
 
         # scroll area
@@ -48,19 +53,12 @@ class DownloadWindow(QWidget):
             self.lq_images.pop()
             hq_link = self.hq_images[-1]
             self.hq_images.pop()
+
+            # gui
             frame = CustomQFrame(hq_link)
-
-            # image
-            x = QLabel()
-            x.setPixmap(self.preview_image(lq_link))
-            x.setStyleSheet('border: None;')
-            frame.layout.addWidget(x)
-
-            # details
+            frame.image_miniature.setPixmap(self.preview_image(lq_link))
             bytes, (width, height) = self.get_sizes(hq_link)
-            size = QLabel(f"{bytes} B,   {width}x{height}")
-            size.setStyleSheet('border: None;')
-            frame.layout.addWidget(size)
+            frame.image_size.setText(f"{bytes}, {width}x{height} px")
 
             horizontal_photos.addWidget(frame)
             self.image_list.append(frame)
@@ -97,6 +95,14 @@ class DownloadWindow(QWidget):
 
     @staticmethod
     def get_sizes(url: str):
+        def convert_size(size_bytes):
+            if size_bytes == 0:
+                return "0B"
+            size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+            i = int(math.floor(math.log(size_bytes, 1024)))
+            p = math.pow(1024, i)
+            s = round(size_bytes / p, 2)
+            return "%s %s" % (s, size_name[i])
         """
         Gets image size and file size in bytes without downloading the image.
         """
@@ -111,6 +117,7 @@ class DownloadWindow(QWidget):
                 break
             p.feed(data)
             if p.image:
-                return size, p.image.size
+                return convert_size(size), p.image.size
+        # program might crash
         file.close()
         return size

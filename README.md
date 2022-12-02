@@ -23,7 +23,7 @@ Home page contains two buttons. The first button allows you to type a cyberdrop 
 - [X] Images in low and high quality
 - [X] GUI(PyQt)
 - [ ] RegEx to validate URL
-- [ ] Downloading images selected by user
+- [X] Downloading images selected by user
 - [ ] Pausing download
 
 https://miro.com/app/live-embed/uXjVPKOfClU=/?moveToViewport=-1547,-656,2719,1035&embedId=502484711913
