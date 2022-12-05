@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QLabel, QPushButton, QDialog
 from PyQt5.QtWidgets import QProgressBar
-from Downloader import Downloader
+from QThreads.Downloader import Downloader
 
 
 class DownloadDialog(QDialog):

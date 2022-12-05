@@ -20,4 +20,3 @@ class Controller:
         self.download.switch_window.connect(self.show_home_window)
         self.download.resize(1280, 720)
         self.home.close()
-        self.download.show()
