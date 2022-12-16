@@ -13,7 +13,18 @@ class ResizeButton(QPushButton):
         self.minSize = 8  # minimum size of the icon
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setSizePolicy(sizePolicy)
-        self.setStyleSheet('background-color: #2c313c')
+        self.setStyleSheet(
+            '''QToolTip {
+                background-color: #383838;
+                color: #A9A9A9;
+                border: #8ad4ff solid 1px;
+            }'''
+            '''QPushButton {
+                background: #2c313c; 
+                padding:0;
+                margin:0;
+            }'''
+        )
 
     def paintEvent(self, event):
         qp = QtGui.QPainter()

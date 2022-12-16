@@ -13,7 +13,7 @@ class DownloadDialog(QDialog):
         self.name = f'{self.links[self.i].split("/")[-1]}'
         self.download_status = True
 
-        self.setWindowTitle("Download dialog")
+        self.setWindowTitle("Download progress")
         self.label = QLabel("Press the button to start downloading.", self)
         self.label.setGeometry(20, 20, 200, 25)
         self.button = QPushButton("Start download", self)

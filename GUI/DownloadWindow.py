@@ -27,6 +27,7 @@ class DownloadWindow(QWidget):
         self.label_img.setAlignment(QtCore.Qt.AlignRight)
         self.downlaod_button.setIcon(QIcon('svg/download.svg'))
         self.downlaod_button.clicked.connect(self.download_images)
+        self.setWindowTitle('Cyber Drop Downloader Images')
 
         # scroll area
         self.scrollAreaWidgetContents.setLayout(QHBoxLayout())
