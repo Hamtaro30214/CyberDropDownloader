@@ -1,3 +1,4 @@
+import time
 from urllib.request import urlopen
 from PyQt5.QtCore import pyqtSignal, QThread
 from DownloadFolder import DownloadFolder
@@ -16,6 +17,7 @@ class Downloader(QThread):
         self.url = url
         self.filename = filename
         self.folder = DownloadFolder()
+        self.is_paused = False
 
     def run(self):
         readBytes = 0
@@ -40,8 +42,15 @@ class Downloader(QThread):
                         readBytes += chunkSize
                         # Tell the window how many bytes we have received.
                         self.setCurrentProgress.emit(readBytes)
+
+                        # pause downloading
+                        while self.is_paused:
+                            time.sleep(0)
             except Exception as e:
                 # rework Exception!!!
                 print('error img', e)
         # If this line is reached then no exception has occurred in the previous lines.
         self.succeeded.emit()
+
+    def pause_resume(self):
+        self.is_paused = not self.is_paused

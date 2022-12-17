@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QLabel, QPushButton, QDialog
-from PyQt5.QtWidgets import QProgressBar
+from PyQt5.QtWidgets import QLabel, QDialog, QPushButton, QProgressBar
 from QThreads.Downloader import Downloader
 
 
@@ -20,6 +19,11 @@ class DownloadDialog(QDialog):
         self.button.move(20, 40)
         self.button.pressed.connect(self.init_download)
 
+        self.pause_resume_button = QPushButton("Pause", self)
+        self.pause_resume_button.setGeometry(150, 40, 100, 30)
+        self.pause_resume_button.pressed.connect(self.pause_resume)
+        self.pause_resume_button.setEnabled(False)
+
         # number of download images
         self.downloaded_images = QLabel(f'Downloaded {self.i}/{self.total}', self)
         self.downloaded_images.setGeometry(20, 60, 300, 25)
@@ -37,6 +41,7 @@ class DownloadDialog(QDialog):
         self.progressBar = QProgressBar(self)
         self.progressBar.setGeometry(20, 120, 300, 25)
         self.progressBar.setValue(self.progressBar.minimum())
+        self.show()
 
     def set_new_download(self):
         self.progressBar.setValue(self.progressBar.minimum())
@@ -48,8 +53,9 @@ class DownloadDialog(QDialog):
         self.downloaded_images.setText(f'Downloaded {self.i}/{self.total}')
 
     def init_download(self):
-        # Disable the button while the file is downloading.
+        # Disable start button and enable pause/resume button
         self.button.setEnabled(False)
+        self.pause_resume_button.setEnabled(True)
         # Run the download in a new thread.
         self.downloader = Downloader(self.url, self.name)
         # Connect the signals which send information about the download
@@ -72,11 +78,22 @@ class DownloadDialog(QDialog):
         self.i += 1
         self.mainBar.setValue(int(self.i / self.total * 100))
         self.update_downloaded_images()
+        # checking for finished download
         if self.mainBar.value() == 100:
             self.progressBar.setValue(self.progressBar.maximum())
             self.download_status = False
-            # Restore the button.
+            # Restore the buttons.
             self.button.setEnabled(True)
-        if self.download_status:
+            self.pause_resume_button.setEnabled(False)
+        # recreation of second download bar
+        else:
             self.set_new_download()
             self.init_download()
+
+    def pause_resume(self):
+        # pause or resume downloading
+        if self.pause_resume_button.text() == 'Pause':
+            self.pause_resume_button.setText('Resume')
+        else:
+            self.pause_resume_button.setText('Pause')
+        self.downloader.pause_resume()
