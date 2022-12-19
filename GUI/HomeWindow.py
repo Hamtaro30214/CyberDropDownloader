@@ -1,4 +1,5 @@
 import os
+import re
 from DownloadFolder import DownloadFolder
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QInputDialog, QPushButton
@@ -61,6 +62,8 @@ class HomeWindow(QWidget):
     def go_download_window(self):
         text, ok = QInputDialog.getText(self, 'Input Dialog', 'Type URl:')
         if ok and 'cyberdrop.me' in text:
+            if not re.match('(?:http|https)://', text):
+                text = 'https://{}'.format(text)
             self.switch_window.emit(text)
 
     def change_download_folder(self):

@@ -22,8 +22,8 @@ Home page contains two buttons. The first button allows you to type a cyberdrop 
 - [X] Image Scraping with Python
 - [X] Images in low and high quality
 - [X] GUI(PyQt)
-- [ ] RegEx to validate URL
+- [X] RegEx to validate URL
 - [X] Downloading images selected by user
-- [ ] Pausing download
+- [X] Pausing download
 
 https://miro.com/app/live-embed/uXjVPKOfClU=/?moveToViewport=-1547,-656,2719,1035&embedId=502484711913
